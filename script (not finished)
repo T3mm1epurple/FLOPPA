@@ -1,0 +1,29 @@
+local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt")()
+
+local win = DiscordLib:Window("raise a floppa")
+
+local autof = false
+
+local plr = game.Players.LocalPlayer
+
+local gen = win:Server("Game", "")
+
+local main = gen:Channel("Farming")
+
+main:Toggle("Auto Floppa",false, function(bool)
+print(bool)
+autof = bool
+end)
+
+while wait() do
+if autof == true then
+fireclickdetector(workspace.Floppa.ClickDetector)
+local d = workspace:GetChildren()
+for i=1, #d do
+if (d[i].Name == "Money") then
+d[i].CanCollide = false
+d[i].Position = plr.Character.HumanoidRootPart.Position
+end
+end
+end
+end
