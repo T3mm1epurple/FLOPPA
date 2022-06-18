@@ -1,10 +1,17 @@
 local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt")()
 
-local win = DiscordLib:Window("raise a floppa")
+local win = DiscordLib:Window("raise a floppa 2")
 
 local autof = false
+local autobf = false
+local autoc = false
+local autop = false
+local autoseed = false
+local hslider = false
+local happ = 10
 
 local plr = game.Players.LocalPlayer
+local floppa = workspace.Floppa
 
 local gen = win:Server("Game", "")
 
@@ -15,12 +22,84 @@ print(bool)
 autof = bool
 end)
 
+main:Toggle("Auto Baby Floppa",false, function(bool)
+print(bool)
+autobf = bool
+end)
+
+main:Toggle("Auto Collect Cash",false, function(bool)
+print(bool)
+autoc = bool
+end)
+
+local health = gen:Channel("Floppa Health")
+
+health:Toggle("Auto Pet Floppa",false, function(bool)
+print(bool)
+autop = bool
+end)
+
+    local sldr = health:Slider("Pet When Happiness", 0, 50, 10, function(t)
+    print(t)
+    happ = t
+    end)
+
+health:Toggle("Use Happiness Slider",false, function(bool)
+print(bool)
+hslider = bool
+end)
+
+local other = gen:Channel("Other")
+
+other:Button("Open Door", function()
+workspace["Key Parts"]["Front Door"]:remove()
+end)
+
+other:Toggle("Auto Collect Seeds",false, function(bool)
+print(bool)
+autoseed = bool
+end)
+
 while wait() do
+    if autoseed == true then
+        local d = workspace.Seeds:GetChildren()
+        for i=1, #d do
+            local seed = d[i]
+            plr.Character.HumanoidRootPart.CFrame = CFrame.new(seed.Position)
+            fireproximityprompt(seed.ProximityPrompt)
+        end
+        end
+    if autobf == true then
+        local d = workspace.Unlocks:GetChildren()
+        for i=1, #d do
+        if (d[i].Name == "Baby Floppa") then
+            local babyflop = d[i]
+        fireclickdetector(d[i].ClickDetector)
+        end
+        end
+        end
+if autop == true then
+    if hslider == false then
+    plr.Character.HumanoidRootPart.CFrame = CFrame.new(floppa.HumanoidRootPart.Position)
+    fireproximityprompt(floppa.HumanoidRootPart.ProximityPrompt)
+    else
+        if floppa.Configuration.Happiness.Value <= happ then
+            repeat
+                wait(0.1)
+             plr.Character.HumanoidRootPart.CFrame = CFrame.new(floppa.HumanoidRootPart.Position)
+            fireproximityprompt(floppa.HumanoidRootPart.ProximityPrompt)
+            until floppa.Configuration.Happiness.Value >= 70
+            end
+    end
+    end
 if autof == true then
 fireclickdetector(workspace.Floppa.ClickDetector)
+end
+if autoc == true then
 local d = workspace:GetChildren()
 for i=1, #d do
-if (d[i].Name == "Money") then
+if (d[i].Name == "Money" or d[i].Name == "Money Bag") then
+wait(0.1)
 d[i].CanCollide = false
 d[i].Position = plr.Character.HumanoidRootPart.Position
 end
